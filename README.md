@@ -1,3 +1,5 @@
+![Python application](https://github.com/upretip/nepal-covid/workflows/Python%20application/badge.svg)
+
 # nepal-covid
 
 We get the data from from [CSSE@JHU](https://github.com/CSSEGISandData/COVID-19) and use pandas and matplotlib to get the data for Nepal and plot the line graph for cumulative `reported`, `recovered` and `death` numbers. Then the plot is tweeted using `Twitter` api keys.
