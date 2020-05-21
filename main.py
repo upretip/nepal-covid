@@ -16,33 +16,34 @@ import matplotlib.pyplot as plt
 
 import datetime
 
-# get the data
+def make_covid_graph():
+    # get the data
 
-reported = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
-deaths = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv'
-recovered = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv'
+    reported = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
+    deaths = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv'
+    recovered = 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv'
 
-#load data into pandas dataframe
-df_reported = pd.read_csv(reported,  sep=',',  error_bad_lines=False)
-df_deaths = pd.read_csv(deaths,  sep=',',  error_bad_lines=False)
-df_recovered = pd.read_csv(recovered,  sep=',',  error_bad_lines=False)
-nepal_reported = df_reported[df_reported['Country/Region']== 'Nepal'].drop(['Province/State', 	'Country/Region',	'Lat', 	'Long'], axis=1)
-nepal_deaths = df_deaths[df_deaths['Country/Region']== 'Nepal'].drop(['Province/State', 	'Country/Region',	'Lat', 	'Long'], axis=1)
-nepal_recovered = df_recovered[df_recovered['Country/Region']== 'Nepal'].drop(['Province/State', 	'Country/Region',	'Lat', 	'Long'], axis=1)
+    #load data into pandas dataframe
+    df_reported = pd.read_csv(reported,  sep=',',  error_bad_lines=False)
+    df_deaths = pd.read_csv(deaths,  sep=',',  error_bad_lines=False)
+    df_recovered = pd.read_csv(recovered,  sep=',',  error_bad_lines=False)
+    nepal_reported = df_reported[df_reported['Country/Region']== 'Nepal'].drop(['Province/State', 	'Country/Region',	'Lat', 	'Long'], axis=1)
+    nepal_deaths = df_deaths[df_deaths['Country/Region']== 'Nepal'].drop(['Province/State', 	'Country/Region',	'Lat', 	'Long'], axis=1)
+    nepal_recovered = df_recovered[df_recovered['Country/Region']== 'Nepal'].drop(['Province/State', 	'Country/Region',	'Lat', 	'Long'], axis=1)
 
-#combine Nepal data together
-np_recovered = nepal_recovered.melt(var_name='Date', value_name='recovered')
-np_reported = nepal_reported.melt(var_name='Date', value_name='reported')
-np_deaths = nepal_deaths.melt(var_name='Date', value_name='deaths')
+    #combine Nepal data together
+    np_recovered = nepal_recovered.melt(var_name='Date', value_name='recovered')
+    np_reported = nepal_reported.melt(var_name='Date', value_name='reported')
+    np_deaths = nepal_deaths.melt(var_name='Date', value_name='deaths')
 
-np = np_reported.merge(np_recovered, on='Date').merge(np_deaths, on='Date')
-np.Date = pd.to_datetime(np.Date)
+    np = np_reported.merge(np_recovered, on='Date').merge(np_deaths, on='Date')
+    np.Date = pd.to_datetime(np.Date)
 
-# create the plot
-np[np.Date> '03-15-2020'].set_index('Date').plot()
-plt.title('COVID-19 Daily cases in Nepal')
-plt.xlabel('Date (since March 15)')
-plt.ylabel('Count of Fatalities')
-plt.show()
-plt.savefig(f'{datetime.datetime.now().date()}.png')
+    # create the plot
+    np[np.Date> '03-15-2020'].set_index('Date').plot()
+    plt.title('COVID-19 Daily cases in Nepal')
+    plt.xlabel('Date (since March 15)')
+    plt.ylabel('Count of Fatalities')
+    # plt.show()
+    plt.savefig(f'output/{datetime.datetime.now().date()}.png')
 
