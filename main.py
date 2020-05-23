@@ -41,9 +41,11 @@ def make_covid_graph():
 
     # create the plot
     np[np.Date> '03-15-2020'].set_index('Date').plot()
-    plt.title('COVID-19 Daily cases in Nepal')
+    plt.title('COVID-19 Cumulative cases in Nepal')
     plt.xlabel('Date (since March 15)')
     plt.ylabel('Count of Fatalities')
     # plt.show()
     plt.savefig(f'output/{datetime.datetime.now().date()}.png')
-
+    return np.tail(1)['reported'].to_string().split()[1], \
+         np.tail(1)['recovered'].to_string().split()[1],\
+              np.tail(1)['deaths'].to_string().split()[1]

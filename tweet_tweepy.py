@@ -13,7 +13,7 @@ logging.basicConfig(filename='nepal-covid.log',
 
 today = datetime.now().date()
 
-make_covid_graph()
+reported, reocvered, deaths = make_covid_graph()
 logging.info('Chart created')
 
 auth = tweepy.OAuthHandler(creds.api_key, creds.api_secret)
@@ -21,7 +21,9 @@ auth.set_access_token(creds.access_token, creds.access_secret)
 api = tweepy.API(auth)
 logging.info('API Authenticated')
 
-tweet = f'Nepal Covid graph for {today}. Source code on https://github.com/upretip/nepal-covid'
+tweet = f"""
+    Nepal Covid graph for {today} with reporeted cases {reported}, deaths {deaths}, and recovered {reocvered}. 
+    Source code on https://github.com/upretip/nepal-covid"""
 image_path = f'output/{today}.png'
 try:
     status = api.update_with_media(image_path, tweet)
