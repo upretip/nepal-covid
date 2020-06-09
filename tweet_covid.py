@@ -1,10 +1,11 @@
 import logging
 import subprocess
 from datetime import datetime
+import base64
 
 import requests
 
-from creds import bearer_token
+from creds import *
 from main import make_covid_graph
 
 logging.basicConfig(filename='nepal-covid.log', 
@@ -19,6 +20,16 @@ make_covid_graph() # saves the covid graph in output dir
 logging.info('Chart Created')
 # create headers to pass on our web post request
 # need oauth1.0 key api + token
+bearer_keys = base64.b64encode(f'{api_key}:{api_secret}'.encode('ascii'))
+bearer_keys = bearer_keys.decode('ascii')
+response = requests.post(
+    "https://api.twitter.com/oauth2/token",
+    headers={'Authorization': bearer_keys,
+             'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'},
+    data={"grant_type": "client_credentials"})
+print(response.status_code)
+bearer_token = response.json()['access_token']
+
 headers = {'Authorization': f'Bearer {bearer_token}'} # bearer token created already
 
 upload_api = 'https://upload.twitter.com/1.1/media/upload.json'

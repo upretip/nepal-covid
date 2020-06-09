@@ -152,3 +152,4 @@ venv
 *.png
 .vscode/settings.json
 nepal-covid.log
+.idea/
